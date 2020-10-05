@@ -1,5 +1,6 @@
 library(rootSolve)
-#Used to analyze native communities, Single Killer Communities, and KillerComms
+ 
+# This script is Used to analyze native communities, Single Killer Communities, and KillerComms
 
 rm(list=ls())
 #Fill These Out
