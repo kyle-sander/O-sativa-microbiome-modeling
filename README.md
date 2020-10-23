@@ -199,6 +199,3 @@ More notes:
 - The  “19oct20_stode_single_killerComms_analysis_……” scripts take several hours  to run, generally 3-8 hours depending on how many instances are running in parallel
 
 - The “21oct20_parameterSensitivity_motifFinding_eigenstable.R” script takes about 10 minutes to complete
-
-
-Test change 
