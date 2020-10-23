@@ -12,7 +12,7 @@
       num_of_species <- 11
       # assigns initial conditions, in thi  s case all species start at same abundance
       start_amt<-0.001
-      file_number<-3 #file number name where KillerComm and Single Killer files are stored
+      file_number<-25 #file number name where KillerComm and Single Killer files are stored
       PSC_number<-957 #Probiotic Support Community identifier number - Probiotic support community to analyze common parameters
       num_of_Common_KillerCommParams<-80 #number of parameters to cycle through and, separately, set to zero and assess performance
       #stode_or_desolve<- #if using stode generated community, input 'stode', if using desolve generated communities, input 'desolve'
@@ -33,23 +33,23 @@
       #Importing in needed parameter and state data from simulations
       #reading in parameters and states from native community generation
       #reading in native community final parameters
-      csvFilePath<-paste("~/Documents/SynCom_Modeling/Native_Communities/stodeNCs/NativeCommunities_stode_final_parameters.csv")
+      csvFilePath<-paste("~/Documents/SynCom_Modeling/Native_Communities/desolveNCs/NativeCommunities_stode2_final_parameters.csv")
       NativeCommunities_stode_final_parameters<-read.table(file = csvFilePath, sep=",",header = FALSE)
       
       #NEED TO IMPORT NATIVE COMMUNITIES FINAL STATES
-      csvFilePath<-paste("~/Documents/SynCom_Modeling/Native_Communities/stodeNCs/NativeCommunities_stode_final_states.csv")
+      csvFilePath<-paste("~/Documents/SynCom_Modeling/Native_Communities/desolveNCs/NativeCommunities_stode2_final_states.csv")
       NativeCommunities_stode_final_states<-read.table(file = csvFilePath, sep=",",header = FALSE)
       
       #reading in selected PSC parameters 
-      csvFilePath2<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_parameters/KillerComm_",PSC_number,"_stode_final_parameters.csv", sep="")
+      csvFilePath2<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_parameters/KillerComm_",PSC_number,"_desolve_final_parameters.csv", sep="")
       KillerComm_stode_highPerformingParams <- read.csv(file = csvFilePath2, sep=",",header = FALSE)
       
       #reading in selected PSC states
-      csvFilePath3<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_states/KillerComm_",PSC_number,"_stode_final_states.csv", sep="")
+      csvFilePath3<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_states/KillerComm_",PSC_number,"_desolve_final_states.csv", sep="")
       KillerComm_stode_highPerformingStates<-read.csv(file = csvFilePath3, sep=",",header = FALSE)
       
       #reading in selected PSC eigs
-      csvFilePath4<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_eigs/KillerComm_",PSC_number,"_stode_final_eigs.csv", sep="")
+      csvFilePath4<-paste("~/Documents/SynCom_Modeling/",file_number,"/KillerComm_stode_community_eigs/KillerComm_",PSC_number,"_desolve_final_eigs.csv", sep="")
       KillerComm_stode_highPerformingEigs<-read.csv(file = csvFilePath4, sep=",",header = FALSE)
       
       #reading in single target species inoculation final states
