@@ -9,6 +9,7 @@
   # mean and standard deviation for interaction coefficients  
   param_mean <- (-0.375)
   param_sd <- 1
+  original_PSC_setNum<-5 #used to delineate whcih single killer parameters to import
   # mean and standard deviation for growth rates
   mu_mean <- 0.0002
   mu_sd <- 0.0002
@@ -31,7 +32,8 @@
   #reading in data from native community generation
   NativeCommunities_stode_final_parameters <- read.csv("~/Documents/SynCom_Modeling/NativeCommunities_stode2_final_parameters.csv", header=FALSE)
   NativeCommunities_stode_final_states <- read.csv("~/Documents/SynCom_Modeling/NativeCommunities_stode2_final_states.csv", header=FALSE)
-  SKparamsForSKreassess<-read.csv("~/Documents/SynCom_Modeling/4/SingleKiller_stode_final_parameters.csv", header=FALSE) #reading in parameters from STSI inoculation, set 4 for import into STSI inoculation - reassessment to ensure abundance score = 430
+  SKcsvfilePath<-paste("~/Documents/SynCom_Modeling/",original_PSC_setNum,"/SingleKiller_stode_final_parameters.csv",sep="")
+  SKparamsForSKreassess<-read.csv(SKcsvfilePath, header=FALSE) #reading in parameters from STSI inoculation, set 4 for import into STSI inoculation - reassessment to ensure abundance score = 430
   
   #begin single killer community generation
   for (n in 1:num_of_comms){
