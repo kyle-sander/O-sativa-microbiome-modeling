@@ -27,8 +27,8 @@ natcomNumber <- 1000  # how many?
 inoculum <- 0.001  # starting abundance
 param_mean <- -0.375  # distribution for interaction coefficients
 param_sd <- 1
-mu_mean <- 0.0002  # distribution for mu (growth rates)
-mu_sd <- 0.005
+mu_mean <- 0.002  # distribution for mu (growth rates)
+mu_sd <- 0.0002
 
 #fixed parameters
 natcomMember <- 5
@@ -61,11 +61,11 @@ for (n in 1:natcomNumber) {
     
     # interaction parameters and growth rates chosen randomly from distribution supplied above
     natcomParameters <- c(
-      muX1 = rnorm(1, mu_mean, sd = mu_sd), 
-      muX2 = rnorm(1, mu_mean, sd = mu_sd),  
-      muX3 = rnorm(1, mu_mean, sd = mu_sd), 
-      muX4 = rnorm(1, mu_mean, sd = mu_sd), 
-      muX5 = rnorm(1, mu_mean, sd = mu_sd), 
+      muX1 = abs(rnorm(1,mu_mean,sd=mu_sd)),
+      muX2 = abs(rnorm(1,mu_mean,sd=mu_sd)), 
+      muX3 = abs(rnorm(1,mu_mean,sd=mu_sd)),
+      muX4 = abs(rnorm(1,mu_mean,sd=mu_sd)),
+      muX5 = abs(rnorm(1,mu_mean,sd=mu_sd)),
       a11 = abs(rnorm(1, param_mean, sd = param_sd))*-1, 
       a12 = rnorm(1, param_mean, sd = param_sd), 
       a13 = rnorm(1, param_mean, sd = param_sd), 
