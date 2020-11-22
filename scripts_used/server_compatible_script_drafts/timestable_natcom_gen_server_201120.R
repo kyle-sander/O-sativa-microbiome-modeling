@@ -1,19 +1,19 @@
-args <- commandArgs(trailingOnly = T)
 library(deSolve) # https://cran.r-project.org/web/packages/deSolve/vignettes/deSolve.pdf
 library(dplyr) # https://www.tidyverse.org/packages 
 
-#changeable parameters
+# this will take the first argument presented in Bash as the # (1-4) of the R instance that it is
+args <- commandArgs(trailingOnly = T)
 core <- as.numeric(args[1])
-customseed <- (20 + core)  # change to prevent duplicate random number generation
+
+customseed <- (50 + core)  # change to prevent duplicate random number generation
+
 natcomNumber <- 250  # how many?
 inoculum <- 0.001  # starting abundance
 param_mean <- -0.375  # distribution for interaction coefficients
 param_sd <- 1
-mu_mean <- 0.002  # distribution for mu (growth rates)
+mu_mean <- 0.0002  # distribution for mu (growth rates)
 mu_sd <- 0.0002
 stabilitythreshold <- 0.1 # determines how strict "timestable" is, used as a percentage of the final abundance
-
-#fixed parameters
 natcomMember <- 5
 
 #differential equation fuction

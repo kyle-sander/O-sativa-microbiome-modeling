@@ -1,13 +1,13 @@
 library(rootSolve)
 library(dplyr)
 
-wrkdir <- "~/SynComEvo/TimeStable_natcoms_201112/"
+wrkdir <- "~/SynComEvo/TimeStable_natcoms_201120/"
 
 # this will take the first argument presented in Bash as the number of the PSC to be evolved
 args <- commandArgs(trailingOnly = T)
 PSC_number <- as.numeric(args[1]) #file number name where KillerComm and Single Killer files are stored
 
-#Fill These Out
+# leave this alone
 num_of_comms <- 1000
 num_of_species <- 11
 # assigns initial conditions, in this case all species start at same abundance
@@ -45,17 +45,17 @@ NonLinearGLV11 <- function(t, state, parameters) {
   })
 }
 
+#reading in parameters from native community generation
+csvFilePath <- paste0(wrkdir, list.files(wrkdir)[grep("native_communities_parameters_", list.files(wrkdir))])
+NativeCommunities_stode_final_parameters <- read.csv(file = csvFilePath, header = FALSE)
+
+#reading in states from native community generation
+csvFilePath1 <- paste0(wrkdir, list.files(wrkdir)[grep("native_communities_states_", list.files(wrkdir))])
+NativeCommunities_stode_final_states <- read.csv(file = csvFilePath1, header = FALSE)
+
 # initialize matrix for tracking important parms
 importantParms <- matrix(nrow = 0, ncol = 11)
 colnames(importantParms) <- c("Parameter Number being omitted/set to 0", "Original Parameter Value", "# of NC's target total abundance > 0.001", "# of NC target species Diff > 0 (total abundance)", "#num of NC with all negative eigenvalues", "% performance when parameter omitted", "Parameter", "# of NC target species [0-single target inoc] -> [>0 - PSC inoc]", "% Performance Difference [0-single target inoc] -> [>0 - PSC inoc]", "# of NC target species [>0 - single target inoc] -> [>>0 - PSC inoc] ", "% Performance Difference [>0 - single target inoc] -> [>>0 - PSC inoc]")
-
-#reading in parameters from native community generation
-csvFilePath <- paste0(wrkdir, list.files(wrkdir)[grep("TimeStable_native_communities_parameters_", list.files(wrkdir))])
-NativeCommunities_stode_final_parameters <- read.csv(file = csvFilePath, header = FALSE)[, -1]
-
-#reading in states from native community generation
-csvFilePath1 <- paste0(wrkdir, list.files(wrkdir)[grep("TimeStable_native_communities_states_", list.files(wrkdir))])
-NativeCommunities_stode_final_states <- read.csv(file = csvFilePath1, header = FALSE)[, -1]
 
 # start loop that is repeated for each round of evolution
 z <- 1
@@ -63,9 +63,8 @@ repeat{
   # sets variables used for comparison in the first round to avoid confusion
   if (z == 1) {
     topPSC <- PSC_number
-    parmcheck <- 0
   }
-  oldcheck <- parmcheck
+  oldcheck <- importantParms[, 1]
   
   print("parameter sweeping...")
   
@@ -557,6 +556,7 @@ repeat{
     mutate(`% Performance Difference [>0 - single target inoc] -> [>>0 - PSC inoc]` = as.numeric(`% Performance Difference [>0 - single target inoc] -> [>>0 - PSC inoc]`)) %>% 
     filter(`% Performance Difference [>0 - single target inoc] -> [>>0 - PSC inoc]` < 90)
 
+  
   importantParms <- rbind(importantParms, newParms)
   
   parmcheck <- newParms[, 1]
@@ -574,7 +574,7 @@ repeat{
   param_mean <- (-0.375)
   param_sd <- 1
   # mean and standard deviation for growth rates
-  mu_mean <- 0.002
+  mu_mean <- 0.0002
   mu_sd <- 0.0002
   
   final_parameters_singlekiller <- matrix(ncol = 42, nrow = num_of_comms)
@@ -714,7 +714,7 @@ repeat{
   
   #writing single killer eigs file into evolution round directory
   csvFileName <- paste("SingleKiller_stode_final_eigs.csv")
-  csvFilePathSKeigs <- paste0(wrkdir, "evolution_of_PSC_", PSC_number, "/Round_", z, "_data/", csvFileName) 
+  csvFilePathSKeigs <- paste0(wrkdir, "evolution_of_PSC_", PSC_number, "/Round_", z, "_data/", csvFileName)
   write.table(final_eigs_singlekiller, file = csvFilePathSKeigs, sep = ",", col.names = F, row.names = F)
   
   # rename. should fix this for consistency
@@ -1302,7 +1302,7 @@ repeat{
   print(paste0("number of parameters identified = ", nrow(newParms)))
   
   z <- z + 1
-  if(identical(parmcheck, oldcheck)) {
+  if(all(parmcheck %in% oldcheck)) {
     break
   }
 }

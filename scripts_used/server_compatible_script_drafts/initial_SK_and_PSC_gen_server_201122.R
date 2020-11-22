@@ -1,15 +1,11 @@
 library(rootSolve)
 library(dplyr)
 
-args <- commandArgs(trailingOnly = T)
-# specify the following
-wrkdir <- "~/SynComEvo/TimeStable_natcoms_201112/"
-file_number <- as.numeric(args[1])
+wrkdir <- "~/SynComEvo/TimeStable_natcoms_201120/"
 
-csvFilePath <- paste0(wrkdir, list.files(wrkdir)[grep("TimeStable_native_communities_parameters_", list.files(wrkdir))])
-NativeCommunities_stode_final_parameters <- read.csv(file = csvFilePath, header = FALSE)[, -1]
-csvFilePath1 <- paste0(wrkdir, list.files(wrkdir)[grep("TimeStable_native_communities_states_", list.files(wrkdir))])
-NativeCommunities_stode_final_states <- read.csv(file = csvFilePath1, header = FALSE)[, -1]
+# this will take the first argument presented in Bash as the number of the PSC to be evolved
+args <- commandArgs(trailingOnly = T)
+file_number <- as.numeric(args[1])
 
 # leave this alone
 num_of_comms <- 1000
@@ -19,7 +15,7 @@ num_of_species <- 11
 param_mean <- (-0.375)
 param_sd <- 1
 # mean and standard deviation for growth rates
-mu_mean <- 0.002
+mu_mean <- 0.0002
 mu_sd <- 0.0002
 # assigns initial conditions, in this case all species start at same abundance
 start_amt <- 0.001
@@ -56,10 +52,13 @@ NonLinearGLV11 <- function(t, state, parameters) {
   })
 }
 
-#final_parameters <- matrix(ncol = 30, nrow = num_of_comms) #might not be needed or used
-#final_states <- matrix(ncol = 5, nrow = num_of_comms) #might not be needed or used
-#final_eigs <- matrix(ncol = 5, nrow = num_of_comms) #might not be needed or used
+#reading in parameters from native community generation
+csvFilePath <- paste0(wrkdir, list.files(wrkdir)[grep("native_communities_parameters_", list.files(wrkdir))])
+NativeCommunities_stode_final_parameters <- read.csv(file = csvFilePath, header = FALSE)
 
+#reading in states from native community generation
+csvFilePath1 <- paste0(wrkdir, list.files(wrkdir)[grep("native_communities_states_", list.files(wrkdir))])
+NativeCommunities_stode_final_states <- read.csv(file = csvFilePath1, header = FALSE)
 
 #initializing matricies and variables for cycling
 final_parameters_KillerComm <- matrix(ncol = (num_of_species * num_of_species + num_of_species), nrow = num_of_comms)
@@ -476,18 +475,18 @@ for (p in 1:num_of_KillerComm) {
       a54 = NativeCommunities_stode_final_parameters[n, 29],
       a55 = NativeCommunities_stode_final_parameters[n, 30],
       #single killer parameters 
-      muX6 = SingleKiller_stode_final_parameters[n, 31],
-      a16 = SingleKiller_stode_final_parameters[n, 32],
-      a61 = SingleKiller_stode_final_parameters[n, 33],
-      a26 = SingleKiller_stode_final_parameters[n, 34],
-      a62 = SingleKiller_stode_final_parameters[n, 35],
-      a36 = SingleKiller_stode_final_parameters[n, 36],
-      a63 = SingleKiller_stode_final_parameters[n, 37],
-      a46 = SingleKiller_stode_final_parameters[n, 38],
-      a64 = SingleKiller_stode_final_parameters[n, 39],
-      a56 = SingleKiller_stode_final_parameters[n, 40],
-      a65 = SingleKiller_stode_final_parameters[n, 41],
-      a66 = SingleKiller_stode_final_parameters[n, 42],
+      muX6 = as.numeric(SingleKiller_stode_final_parameters[n, 31]), 
+      a16 = as.numeric(SingleKiller_stode_final_parameters[n, 32]), 
+      a61 = as.numeric(SingleKiller_stode_final_parameters[n, 33]), 
+      a26 = as.numeric(SingleKiller_stode_final_parameters[n, 34]), 
+      a62 = as.numeric(SingleKiller_stode_final_parameters[n, 35]), 
+      a36 = as.numeric(SingleKiller_stode_final_parameters[n, 36]), 
+      a63 = as.numeric(SingleKiller_stode_final_parameters[n, 37]), 
+      a46 = as.numeric(SingleKiller_stode_final_parameters[n, 38]), 
+      a64 = as.numeric(SingleKiller_stode_final_parameters[n, 39]), 
+      a56 = as.numeric(SingleKiller_stode_final_parameters[n, 40]), 
+      a65 = as.numeric(SingleKiller_stode_final_parameters[n, 41]), 
+      a66 = as.numeric(SingleKiller_stode_final_parameters[n, 42]),
       KCparams)
     
     # sets starting abundance to the final states obtained from the previous models and adds killercomm abundances
